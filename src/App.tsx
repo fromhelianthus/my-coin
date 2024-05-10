@@ -1,25 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import { ThemeProvider } from "styled-components";
+import GlobalStyle from "./GlobalStyle";
+import Router from "./Router";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { lightTheme, darkTheme } from "./theme";
+import { IconButton } from "@material-ui/core";
+import { Brightness2Rounded as DarkModeIcon, Brightness5Rounded as LightModeIcon } from '@material-ui/icons';
 
 function App() {
+
+  const [currentTheme, setCurrentTheme] = useState(lightTheme);
+
+  const toggleTheme = () => {
+    setCurrentTheme(currentTheme === lightTheme ? darkTheme : lightTheme);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={currentTheme}>
+      <GlobalStyle />
+      <Router />
+      <ReactQueryDevtools initialIsOpen={true} />
+      <div className="theme-toggle-button-wrapper">
+        <IconButton onClick={toggleTheme}>
+          {currentTheme === lightTheme ? <DarkModeIcon style={{ color: "091E42" }} /> : <LightModeIcon style={{ color: "#DEE4EA" }} />}
+        </IconButton>
+      </div>
+    </ThemeProvider>
   );
 }
 
