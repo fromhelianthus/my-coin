@@ -8,7 +8,7 @@ interface IHistorical {
   open: number;
   high: number;
   low: number;
-  close: number;
+  close: string;
   volume: number;
   market_cap: number;
 }
@@ -16,12 +16,8 @@ interface ChartProps {
   coinId: string;
 }
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data } = useQuery<IHistorical[]>(
-    ["ohlcv", coinId],
-    () => fetchCoinHistory(coinId),
-    {
-      refetchInterval: 10000,
-    }
+  const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
+    fetchCoinHistory(coinId)
   );
   return (
     <div>
@@ -33,7 +29,7 @@ function Chart({ coinId }: ChartProps) {
           series={[
             {
               name: "Price",
-              data: Array.isArray(data) ? data.map((price) => price.close) : [],
+              data: Array.isArray(data) ? data.map((price) => parseFloat(price.close)) : []
             },
           ]}
           options={{
@@ -60,24 +56,12 @@ function Chart({ coinId }: ChartProps) {
               axisBorder: { show: false },
               axisTicks: { show: false },
               labels: { show: false },
-              type: "datetime",
-              categories: data?.map((price) => price.time_close) || [],
-            },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
-            },
-            colors: ["#0fbcf9"],
-            tooltip: {
-              y: {
-                formatter: (value) => `$${value.toFixed(2)}`,
-              },
             },
           }}
         />
       )}
     </div>
   );
-}  
+}
 
 export default Chart;
