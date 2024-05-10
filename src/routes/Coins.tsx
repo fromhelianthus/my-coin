@@ -79,7 +79,7 @@ function Coins() {
         <Loader>Loading...</Loader>
       ) : (
         <CoinsList>
-          {data?.slice(0, 100).map((coin) => (
+          {data?.slice(0, 50).map((coin) => (
             <Coin key={coin.id}>
               <Link
                 to={{
@@ -88,7 +88,7 @@ function Coins() {
                 }}
               >
                 <Img
-                  src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                  src={`https://cryptoicon-api.pages.dev/api/icon/${coin.symbol.toLowerCase()}`}
                 />
                 {coin.name} &rarr;
               </Link>
