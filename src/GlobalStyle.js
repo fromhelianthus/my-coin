@@ -1,11 +1,4 @@
-import React, { useState } from "react";
-import { ThemeProvider } from "styled-components";
-import GlobalStyle from "./GlobalStyle";
-import Router from "./Router";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { lightTheme, darkTheme } from "./theme";
-import { IconButton } from "@material-ui/core";
-import { Brightness2Rounded as DarkModeIcon, Brightness5Rounded as LightModeIcon } from '@material-ui/icons';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -62,36 +55,21 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color:${(props) => props.theme.bgColor};
-  color:${(props) => props.theme.textColor};
+  background-color: ${props => props.theme.bgColor};
+  color: ${props => props.theme.textColor};
   line-height: 1.2;
 }
 a {
-  text-decoration:none;
-  color:inherit;
+  text-decoration: none;
+  color: inherit;
 }
-`;
-
-function App() {
-
-  const [currentTheme, setCurrentTheme] = useState(lightTheme);
-
-  const toggleTheme = () => {
-    setCurrentTheme(currentTheme === lightTheme ? darkTheme : lightTheme);
-  };
-
-  return (
-    <ThemeProvider theme={currentTheme}>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
-      <div className="theme-toggle-button-wrapper">
-        <IconButton onClick={toggleTheme}>
-          {currentTheme === lightTheme ? <DarkModeIcon style={{ color: "091E42" }} /> : <LightModeIcon style={{ color: "#DEE4EA" }} />}
-        </IconButton>
-      </div>
-    </ThemeProvider>
-  );
+.theme-toggle-button-wrapper {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+   
 }
+`
+;
 
-export default App;
+export default GlobalStyle;

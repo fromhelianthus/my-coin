@@ -15,6 +15,7 @@ import Price from "./Price";
 
 const Title = styled.h1`
   font-size: 48px;
+  font-weight: bold;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -39,10 +40,11 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #8D99AE;
   padding: 10px 20px;
   border-radius: 10px;
 `;
+
 const OverviewItem = styled.div`
   display: flex;
   flex-direction: column;
@@ -51,10 +53,12 @@ const OverviewItem = styled.div`
   span:first-child {
     font-size: 10px;
     font-weight: 400;
+    font-weight: bold;
     text-transform: uppercase;
     margin-bottom: 5px;
   }
 `;
+
 const Description = styled.p`
   margin: 20px 0px;
 `;
@@ -71,7 +75,8 @@ const Tab = styled.span<{ isActive: boolean }>`
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  background-color: #8D99AE;
   border-radius: 10px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
@@ -84,9 +89,11 @@ const Tab = styled.span<{ isActive: boolean }>`
 interface RouteParams {
   coinId: string;
 }
+
 interface RouteState {
   name: string;
 }
+
 interface InfoData {
   id: string;
   name: string;
@@ -107,6 +114,7 @@ interface InfoData {
   first_data_at: string;
   last_data_at: string;
 }
+
 interface PriceData {
   id: string;
   name: string;
@@ -143,20 +151,26 @@ interface PriceData {
 
 function Coin() {
   const { coinId } = useParams<RouteParams>();
+
   const { state } = useLocation<RouteState>();
+
   const priceMatch = useRouteMatch("/:coinId/price");
+
   const chartMatch = useRouteMatch("/:coinId/chart");
+
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
     () => fetchCoinInfo(coinId)
   );
+
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
     () => fetchCoinTickers(coinId),
     {
-      refetchInterval: 5000,
+      refetchInterval: 10000,
     }
   );
+  
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
@@ -185,18 +199,18 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price</span>
-              <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
+              <span>${tickersData?.quotes.USD.price.toLocaleString(undefined, {maximumFractionDigits: 3})}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply</span>
-              <span>{tickersData?.total_supply}</span>
+              <span>{tickersData?.total_supply?.toLocaleString()}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply</span>
-              <span>{tickersData?.max_supply}</span>
+              <span>{tickersData?.max_supply?.toLocaleString()}</span>
             </OverviewItem>
           </Overview>
 
@@ -211,7 +225,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price />
+              <Price/>
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
