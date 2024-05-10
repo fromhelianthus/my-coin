@@ -176,26 +176,26 @@ function Coin() {
         <>
           <Overview>
             <OverviewItem>
-              <span>Rank:</span>
+              <span>Rank</span>
               <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Symbol:</span>
+              <span>Symbol</span>
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Price:</span>
+              <span>Price</span>
               <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
-              <span>Total Suply:</span>
+              <span>Total Suply</span>
               <span>{tickersData?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Max Supply:</span>
+              <span>Max Supply</span>
               <span>{tickersData?.max_supply}</span>
             </OverviewItem>
           </Overview>
