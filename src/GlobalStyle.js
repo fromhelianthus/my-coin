@@ -55,8 +55,8 @@ table {
 body {
   font-weight: 300;
   font-family: 'Source Sans Pro', sans-serif;
-  background-color: ${props => props.theme.bgColor}; /* props.theme를 직접 사용 */
-  color: ${props => props.theme.textColor}; /* props.theme를 직접 사용 */
+  background-color: ${props => props.theme.bgColor};
+  color: ${props => props.theme.textColor};
   line-height: 1.2;
 }
 a {
@@ -68,10 +68,6 @@ a {
     top: 20px;
     right: 20px;
    
-}
-.theme-toggle-button {
-    padding: 10px;
-    border-radius: 5px;
 }
 `
 ;

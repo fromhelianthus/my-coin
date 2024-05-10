@@ -4,8 +4,8 @@ import GlobalStyle from "./GlobalStyle";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { lightTheme, darkTheme } from "./theme";
-import { IconButton } from '@material-ui/core';
-import { Brightness4 as DarkModeIcon, Brightness7 as LightModeIcon } from '@material-ui/icons';
+import { IconButton } from "@material-ui/core";
+import { Brightness2Rounded as DarkModeIcon, Brightness5Rounded as LightModeIcon } from '@material-ui/icons';
 
 function App() {
 
@@ -15,16 +15,14 @@ function App() {
     setCurrentTheme(currentTheme === lightTheme ? darkTheme : lightTheme);
   };
 
-  const buttonText = currentTheme === lightTheme ? "to dark" : "to light";
-
   return (
     <ThemeProvider theme={currentTheme}>
       <GlobalStyle />
       <Router />
       <ReactQueryDevtools initialIsOpen={true} />
       <div className="theme-toggle-button-wrapper">
-        <IconButton className="theme-toggle-button" onClick={toggleTheme}>
-          {currentTheme === lightTheme ? <DarkModeIcon /> : <LightModeIcon />}
+        <IconButton onClick={toggleTheme}>
+          {currentTheme === lightTheme ? <DarkModeIcon style={{ color: "091E42" }} /> : <LightModeIcon style={{ color: "#DEE4EA" }} />}
         </IconButton>
       </div>
     </ThemeProvider>
