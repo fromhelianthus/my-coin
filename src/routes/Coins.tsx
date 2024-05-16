@@ -22,7 +22,7 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color: #9FADBC;
+  background-color: #9fadbc;
   color: ${(props) => props.theme.bgColor};
   border-radius: 15px;
   margin-bottom: 10px;
@@ -67,15 +67,14 @@ interface ICoin {
   type: string;
 }
 
-interface ICoinProps {
-}
+interface ICoinProps {}
 
 function Coins({}: ICoinProps) {
   const setDarkAtom = useSetRecoilState(isDarkAtom);
-  const toggleDarkAtom = () => setDarkAtom(prev => !prev);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
 
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-  
+
   return (
     <Container>
       <Helmet>
