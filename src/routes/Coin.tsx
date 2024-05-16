@@ -6,6 +6,7 @@ import {
   useLocation,
   useParams,
   useRouteMatch,
+  useHistory,
 } from "react-router-dom";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -40,7 +41,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: #8D99AE;
+  background-color: #8d99ae;
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -76,7 +77,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   font-size: 12px;
   font-weight: 400;
   font-weight: bold;
-  background-color: #8D99AE;
+  background-color: #8d99ae;
   border-radius: 10px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
@@ -151,11 +152,10 @@ interface PriceData {
 
 function Coin() {
   const { coinId } = useParams<RouteParams>();
-
   const { state } = useLocation<RouteState>();
+  const history = useHistory(); // useHistory 훅 사용
 
   const priceMatch = useRouteMatch("/:coinId/price");
-
   const chartMatch = useRouteMatch("/:coinId/chart");
 
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
@@ -170,7 +170,7 @@ function Coin() {
       refetchInterval: 10000,
     }
   );
-  
+
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
@@ -183,6 +183,7 @@ function Coin() {
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
+        <button onClick={() => history.push("/")}>Back</button> {}
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -199,7 +200,12 @@ function Coin() {
             </OverviewItem>
             <OverviewItem>
               <span>Price</span>
-              <span>${tickersData?.quotes?.USD?.price?.toLocaleString(undefined, {maximumFractionDigits: 3})}</span>
+              <span>
+                $
+                {tickersData?.quotes?.USD?.price?.toLocaleString(undefined, {
+                  maximumFractionDigits: 3,
+                })}
+              </span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -225,7 +231,7 @@ function Coin() {
 
           <Switch>
             <Route path={`/:coinId/price`}>
-              <Price/>
+              <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
               <Chart coinId={coinId} />
