@@ -3,16 +3,14 @@ import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
 import { isDarkAtom } from "./atoms";
 import { useRecoilValue } from "recoil";
+import { darkTheme, lightTheme } from "../theme";
 
 interface IHistorical {
-  time_open: string;
-  time_close: string;
-  open: number;
-  high: number;
-  low: number;
+  time_open: number;
+  open: string;
+  high: string;
+  low: string;
   close: string;
-  volume: number;
-  market_cap: number;
 }
 
 interface ChartProps {
@@ -22,6 +20,7 @@ interface ChartProps {
 function Chart({ coinId }: ChartProps) {
 
   const isDark = useRecoilValue(isDarkAtom);
+  const theme = isDark ? darkTheme : lightTheme; // 현재 테마를 선택합니다.
 
   const { isLoading, data } = useQuery<IHistorical[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
@@ -33,11 +32,21 @@ function Chart({ coinId }: ChartProps) {
         "Loading chart..."
       ) : (
         <ApexChart
-          type="line"
+          type="candlestick"
           series={[
             {
               name: "Price",
-              data: Array.isArray(data) ? data.map((price) => parseFloat(price.close)) : []
+              data: Array.isArray(data)
+                ? data.map((price) => ({
+                    x: new Date(price.time_open * 1000),
+                    y: [
+                      parseFloat(price.open),
+                      parseFloat(price.high),
+                      parseFloat(price.low),
+                      parseFloat(price.close),
+                    ],
+                  }))
+                : [],
             },
           ]}
           options={{
@@ -53,17 +62,48 @@ function Chart({ coinId }: ChartProps) {
               background: "transparent",
             },
             grid: { show: false },
-            stroke: {
-              curve: "smooth",
-              width: 4,
+            xaxis: {
+              type: "datetime",
+              labels: {
+                format: "dd MMM",
+                style: {
+                  colors: theme.textColor,
+                },
+              },
+              axisBorder: {
+                show: true,
+                color: theme.textColor,
+              },
+              axisTicks: {
+                show: true,
+                color: theme.textColor,
+              },
             },
             yaxis: {
-              show: false,
+              labels: {
+                style: {
+                  colors: theme.textColor,
+                },
+                formatter: function (val) {
+                  return val.toFixed(3);
+                },
+              },
+              axisBorder: {
+                show: true,
+                color: theme.textColor,
+              },
+              axisTicks: {
+                show: true,
+                color: theme.textColor,
+              },
             },
-            xaxis: {
-              axisBorder: { show: false },
-              axisTicks: { show: false },
-              labels: { show: false },
+            plotOptions: {
+              candlestick: {
+                colors: {
+                  upward: '#ac0710',
+                  downward: '#125aac',
+                },
+              },
             },
           }}
         />
