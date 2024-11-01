@@ -2,6 +2,7 @@
   "name": "my-coin",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://fromhelianthus.github.io/my-coin",
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
@@ -29,7 +30,9 @@
     "start": "react-scripts start",
     "build": "git checkout desktop && react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
